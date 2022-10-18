@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Category extends Model
 {
@@ -20,7 +21,12 @@ class Category extends Model
 
         // TODO 3rd lesson
         static::creating(function (Category $category) {
-            $this->slug = $this->slug ?? str($category->title)->slug();
+            $category->slug = $category->slug ?? str($category->title)->slug();
         });
+    }
+
+    public function products(): BelongsToMany
+    {
+        return $this->belongsToMany(Product::class);
     }
 }

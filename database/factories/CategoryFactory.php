@@ -17,7 +17,7 @@ class CategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence(),
+            'title' => ucfirst($this->faker->words(2, true)), // two words with uppercase first letter
         ];
     }
 }
