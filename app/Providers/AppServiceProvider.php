@@ -28,13 +28,18 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Model::preventLazyLoading(!app()->isProduction());
-        Model::preventSilentlyDiscardingAttributes(!app()->isProduction());
+        Model::shouldBeStrict(!app()->isProduction());
 
-        DB::whenQueryingForLongerThan(500, function (Connection $connection) {
-            logger()
-                ->channel('telegram')
-                ->debug('Долгое выполнение запроса: ' . $connection->query()->toSql());
+        if (!app()->isProduction()) {
+            return;
+        }
+
+        DB::listen(function ($query) {
+            if ($query->time > 500) {
+                logger()
+                    ->channel('telegram')
+                    ->debug('Долгое выполнение запроса: ' . $query->sql, $query->bindings);
+            }
         });
 
         $kernel = app(Kernel::class);
