@@ -9,10 +9,13 @@ trait HasSlug
     protected static function bootHasSlug(): void
     {
         static::creating(function (Model $model) {
-            $model->slug = $model->slug
-                ?? str($model->{self::slugFrom()})
-                    ->append(time())
-                    ->slug();
+            if ($model->slug) {
+                return;
+            }
+
+            $slug = str($model->{self::slugFrom()})->slug();
+            $countSameSlugs = $model->where('slug', $slug)->count();
+            $model->slug = $countSameSlugs === 0 ? $slug : "$slug-$countSameSlugs";
         });
     }
 
