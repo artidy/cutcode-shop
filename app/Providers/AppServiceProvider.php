@@ -34,17 +34,17 @@ class AppServiceProvider extends ServiceProvider
             return;
         }
 
-        DB::listen(function ($query) {
-            if ($query->time > 500) {
+        $queryTime = (int) env('QUERY_TIME', 100);
+
+        DB::listen(function ($query) use ($queryTime) {
+            if ($query->time > $queryTime) {
                 logger()
                     ->channel('telegram')
-                    ->debug('Долгое выполнение запроса: ' . $query->sql, $query->bindings);
+                    ->debug("Запрос выполняется дольше чем $queryTime: $query->sql", $query->bindings);
             }
         });
 
-        $kernel = app(Kernel::class);
-
-        $kernel->whenRequestLifecycleIsLongerThan(
+        app(Kernel::class)->whenRequestLifecycleIsLongerThan(
             CarbonInterval::seconds(4),
             function () {
                 logger()
