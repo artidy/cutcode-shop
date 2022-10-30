@@ -9,16 +9,11 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up(): void
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('slug');
+            $table->string('slug')->unique();
             $table->string('title');
             $table->string('thumbnail')->nullable();
             $table->unsignedInteger('price')->default(0);
@@ -33,14 +28,11 @@ return new class extends Migration
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('category_product');
-        Schema::dropIfExists('products');
+        if (!app()->isProduction()) {
+            Schema::dropIfExists('category_product');
+            Schema::dropIfExists('products');
+        }
     }
 };
