@@ -3,7 +3,7 @@
     'isError' => false,
 ])
 
-<input {{ $attributes
+<input type="{{ $type }}" {{ $attributes
     ->class([
             'is_error' => $isError,
             'w-full

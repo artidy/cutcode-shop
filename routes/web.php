@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'index')->name('login');
+    Route::post('/login', 'signIn')->name('signIn');
     Route::get('/sign-up', 'signUp')->name('signUp');
     Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
     Route::get('/reset-password', 'resetPassword')->name('resetPassword');
