@@ -19,6 +19,7 @@ Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'index')->name('login');
     Route::get('/sign-up', 'signUp')->name('signUp');
     Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
+    Route::get('/reset-password', 'resetPassword')->name('resetPassword');
 });
 
 Route::get('/', HomeController::class)->name('home');
