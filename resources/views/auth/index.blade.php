@@ -1,9 +1,13 @@
+<?php
+    $title = 'Вход в аккаунт';
+?>
+
 @extends('layouts.auth')
 
-@section('title', 'Вход в аккаунт')
+@section('title', $title)
 
 @section('content')
-    <x-forms.auth-forms title="Вход в аккаунт" action="">
+    <x-forms.auth-forms title="{{ $title }}" action="">
         @csrf
 
         <x-forms.text-input
@@ -49,7 +53,7 @@
         <x-slot:buttons>
             <div class="space-y-3 mt-5">
                 <div class="text-xxs md:text-xs">
-                    <a href="lost-password.html" class="text-white hover:text-white/70 font-bold">
+                    <a href="{{ route('forgotPassword') }}" class="text-white hover:text-white/70 font-bold">
                         Забыли пароль?
                     </a>
                 </div>
