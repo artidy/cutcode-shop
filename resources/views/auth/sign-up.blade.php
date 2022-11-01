@@ -14,6 +14,7 @@
                 name="email"
                 type="email"
                 placeholder="E-mail"
+                value="{{ old('email') }}"
                 required="true"
                 :isError="$errors->has('email')"
         />
@@ -26,6 +27,7 @@
         <x-forms.text-input
                 name="name"
                 placeholder="Имя"
+                value="{{ old('name') }}"
                 required="true"
                 :isError="$errors->has('name')"
         />

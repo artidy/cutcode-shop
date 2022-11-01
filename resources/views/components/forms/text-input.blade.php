@@ -1,9 +1,10 @@
 @props([
     'type' => 'text',
     'isError' => false,
+    'value' => '',
 ])
 
-<input type="{{ $type }}" {{ $attributes
+<input type="{{ $type }}" value="{{ $value }}" {{ $attributes
     ->class([
             'is_error' => $isError,
             'w-full

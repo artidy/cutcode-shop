@@ -14,6 +14,7 @@
                 name="email"
                 type="email"
                 placeholder="E-mail"
+                value="{{ old('email') }}"
                 required="true"
                 :isError="$errors->has('email')"
         />
