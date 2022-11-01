@@ -11,9 +11,18 @@
         @csrf
 
         <x-forms.text-input
+                name="token"
+                value="{{ $token }}"
+                hidden="true"
+        >
+
+        </x-forms.text-input>
+
+        <x-forms.text-input
                 name="email"
                 type="email"
                 placeholder="E-mail"
+                readonly="true"
         />
 
         <x-forms.text-input
