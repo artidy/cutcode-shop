@@ -16,15 +16,29 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::controller(AuthController::class)->group(function() {
-    Route::get('/login', 'index')->name('login');
-    Route::post('/login', 'signIn')->name('signIn');
+    Route::get('/login', 'index')
+        ->middleware('guest')->name('login');
+    Route::post('/login', 'signIn')
+        ->middleware('guest')->name('signIn');
     Route::delete('/logout', 'logout')->name('logout');
 
-    Route::get('/sign-up', 'signUp')->name('signUp');
-    Route::post('/sign-up', 'register')->name('register');
+    Route::get('/sign-up', 'signUp')
+        ->middleware('guest')->name('signUp');
+    Route::post('/sign-up', 'register')
+        ->middleware('guest')->name('register');
 
-    Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
-    Route::get('/reset-password', 'resetPassword')->name('resetPassword');
+    Route::get('/forgot-password', 'forgot')
+        ->middleware('guest')->name('forgot');
+    Route::post('/forgot-password', 'forgotPassword')
+        ->middleware('guest')->name('forgotPassword');
+    Route::get('/reset-password/{token}', 'reset')
+        ->middleware('guest')->name('reset');
+    Route::post('/reset-password', 'resetPassword')
+        ->middleware('guest')->name('resetPassword');
 });
+
+Route::get('/forgot-password', function () {
+    return view('auth.forgot-password');
+})->middleware('guest')->name('password.request');
 
 Route::get('/', HomeController::class)->name('home');

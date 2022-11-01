@@ -7,7 +7,7 @@
 @section('title', $title)
 
 @section('content')
-    <x-forms.auth-forms title="{{ $title }}" action="">
+    <x-forms.auth-forms title="{{ $title }}" action="{{ route('forgotPassword') }}">
         @csrf
 
         <x-forms.text-input
