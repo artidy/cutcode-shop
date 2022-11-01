@@ -27,8 +27,7 @@ class SignUpFormRequest extends FormRequest
             'email' => str(request('email'))
                 ->squish()
                 ->lower()
-                ->value(),
-            'password' => bcrypt(request('password'))
+                ->value()
         ]);
     }
 }

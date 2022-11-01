@@ -12,11 +12,9 @@ $title = 'Главная';
             @csrf
             @method('DELETE')
 
-            <x-slot:buttons>
-                <x-forms.primary-button>
-                    Выйти
-                </x-forms.primary-button>
-            </x-slot:buttons>
+            <x-forms.primary-button type="submit">
+                Выйти
+            </x-forms.primary-button>
         </x-forms.auth-forms>
     @endauth
 @endsection

@@ -46,7 +46,7 @@ class AuthController extends Controller
 
     public function register(SignUpFormRequest $request)
     {
-        $user = User::query()->create($request->validated());
+        $user = User::query()->create([...$request->validated(), 'password' => bcrypt($request->get('password'))]);
 
         event(new Registered($user));
 
