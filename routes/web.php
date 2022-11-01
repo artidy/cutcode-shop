@@ -18,7 +18,11 @@ use Illuminate\Support\Facades\Route;
 Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'index')->name('login');
     Route::post('/login', 'signIn')->name('signIn');
+    Route::delete('/logout', 'logout')->name('logout');
+
     Route::get('/sign-up', 'signUp')->name('signUp');
+    Route::post('/sign-up', 'register')->name('register');
+
     Route::get('/forgot-password', 'forgotPassword')->name('forgotPassword');
     Route::get('/reset-password', 'resetPassword')->name('resetPassword');
 });
