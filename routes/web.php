@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,9 @@ Route::controller(AuthController::class)->group(function() {
         ->middleware('guest')->name('password.reset');
     Route::post('/reset-password', 'resetPassword')
         ->middleware('guest')->name('resetPassword');
+
+    Route::get('/auth/socialite/github', 'github')->name('socialite.github');
+    Route::get('/auth/socialite/github/callback', 'githubCallback')->name('socialite.github.callback');
 });
 
 Route::get('/', HomeController::class)->name('home');
