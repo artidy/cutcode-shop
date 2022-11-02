@@ -31,7 +31,10 @@ class AuthController extends Controller
 
     public function reset(string $token)
     {
-        return view('auth.reset-password', ['token' => $token]);
+        return view('auth.reset-password', [
+            'token' => $token,
+            'email' => request()->query('email')
+        ]);
     }
 
     public function signIn(SignInFormRequest $request): RedirectResponse

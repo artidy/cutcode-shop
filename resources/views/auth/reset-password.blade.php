@@ -21,6 +21,7 @@
         <x-forms.text-input
                 name="email"
                 type="email"
+                value="{{ $email }}"
                 placeholder="E-mail"
                 readonly="true"
         />

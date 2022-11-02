@@ -32,13 +32,9 @@ Route::controller(AuthController::class)->group(function() {
     Route::post('/forgot-password', 'forgotPassword')
         ->middleware('guest')->name('forgotPassword');
     Route::get('/reset-password/{token}', 'reset')
-        ->middleware('guest')->name('reset');
+        ->middleware('guest')->name('password.reset');
     Route::post('/reset-password', 'resetPassword')
         ->middleware('guest')->name('resetPassword');
 });
-
-Route::get('/forgot-password', function () {
-    return view('auth.forgot-password');
-})->middleware('guest')->name('password.request');
 
 Route::get('/', HomeController::class)->name('home');

@@ -14,7 +14,7 @@ class ResetPasswordFormRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return auth()->guest();
     }
 
     /**
@@ -26,7 +26,7 @@ class ResetPasswordFormRequest extends FormRequest
     {
         return [
             'token' => ['required'],
-            'email' => ['required', 'email:dns'],
+            'email' => ['required', 'email'],
             'password' => ['required', 'confirmed', Password::default()],
         ];
     }
