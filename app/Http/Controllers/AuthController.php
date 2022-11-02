@@ -111,11 +111,12 @@ class AuthController extends Controller
     {
         $githubUser = Socialite::driver('github')->user();
 
-        $user = User::query()->updateOrCreate([
+        $user = User::updateOrCreate([
             'github_id' => $githubUser->id,
         ], [
             'name' => $githubUser->name,
             'email' => $githubUser->email,
+            'password' => bcrypt(str()->random()),
         ]);
 
         auth()->login($user);
