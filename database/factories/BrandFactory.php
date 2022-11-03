@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Support\Testing\FakerImageProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,11 +19,7 @@ class BrandFactory extends Factory
     {
         return [
             'title' => $this->faker->company(),
-            'thumbnail' => $this->faker->file(
-                base_path('tests/fixtures/images/brands'),
-                storage_path('app/public/images/brands'),
-                false
-            ),
+            'thumbnail' => $this->faker->fixtureImage('brands', 'brands'),
         ];
     }
 }
