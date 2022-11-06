@@ -20,11 +20,13 @@ Route::controller(AuthController::class)->group(function() {
     Route::get('/login', 'index')
         ->middleware('guest')->name('login');
     Route::post('/login', 'signIn')
-        ->middleware('guest')->name('signIn');
+        ->middleware('guest', 'throttle:auth')
+        ->name('signIn');
     Route::delete('/logout', 'logout')->name('logout');
 
     Route::get('/sign-up', 'signUp')
-        ->middleware('guest')->name('signUp');
+        ->middleware('guest', 'throttle:auth')
+        ->name('signUp');
     Route::post('/sign-up', 'register')
         ->middleware('guest')->name('register');
 
