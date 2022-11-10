@@ -12,10 +12,19 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
 use Tests\TestCase;
+use Throwable;
 
 class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
+
+    public function test_it_login_success(): void
+    {
+        $this->get(action([AuthController::class, 'index']))
+            ->assertOk()
+            ->assertSee('Вход в аккаунт')
+            ->assertViewIs('auth.index');
+    }
 
     public function test_it_register_success(): void
     {
