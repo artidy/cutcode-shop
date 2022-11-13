@@ -2,12 +2,12 @@
 
 namespace Tests\Feature\App\Http\Controllers;
 
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\Auth\SignInController;
 use App\Http\Requests\SignInFormRequest;
 use App\Http\Requests\SignUpFormRequest;
 use App\Listeners\SendEmailNewUserListener;
-use App\Models\User;
 use App\Notifications\NewUserNotification;
+use Domain\Auth\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
@@ -20,7 +20,7 @@ class AuthControllerTest extends TestCase
 
     public function test_it_login_success(): void
     {
-        $this->get(action([AuthController::class, 'index']))
+        $this->get(action([SignInController::class, 'index']))
             ->assertOk()
             ->assertSee('Вход в аккаунт')
             ->assertViewIs('auth.index');
@@ -28,7 +28,7 @@ class AuthControllerTest extends TestCase
 
     public function test_it_sign_up_success(): void
     {
-        $this->get(action([AuthController::class, 'signUp']))
+        $this->get(action([SignInController::class, 'signUp']))
             ->assertOk()
             ->assertSee('Регистрация')
             ->assertViewIs('auth.sign-up');
@@ -36,7 +36,7 @@ class AuthControllerTest extends TestCase
 
     public function test_it_forgot_success(): void
     {
-        $this->get(action([AuthController::class, 'forgot']))
+        $this->get(action([SignInController::class, 'forgot']))
             ->assertOk()
             ->assertSee('Забыли пароль')
             ->assertViewIs('auth.forgot-password');
@@ -57,7 +57,7 @@ class AuthControllerTest extends TestCase
             'password' => $password
         ]);
 
-        $response = $this->post(action([AuthController::class, 'signIn']), $request);
+        $response = $this->post(action([SignInController::class, 'signIn']), $request);
 
         $response->assertValid()
             ->assertRedirect(route('home'));
@@ -69,7 +69,7 @@ class AuthControllerTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->actingAs($user)->delete(action([AuthController::class, 'logout']));
+        $this->actingAs($user)->delete(action([SignInController::class, 'logout']));
 
         $this->assertGuest();
     }
@@ -86,7 +86,7 @@ class AuthControllerTest extends TestCase
         );
 
         $response = $this->post(
-            action([AuthController::class, 'register']),
+            action([SignInController::class, 'register']),
             $request
         );
 
