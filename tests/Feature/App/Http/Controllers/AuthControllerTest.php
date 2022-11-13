@@ -23,7 +23,7 @@ class AuthControllerTest extends TestCase
         $this->get(action([SignInController::class, 'index']))
             ->assertOk()
             ->assertSee('Вход в аккаунт')
-            ->assertViewIs('auth.index');
+            ->assertViewIs('auth.login');
     }
 
     public function test_it_sign_up_success(): void

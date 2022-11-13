@@ -10,7 +10,7 @@ class SignInController extends Controller
 {
     public function page()
     {
-        return view('auth.index');
+        return view('auth.login');
     }
 
     public function handle(SignInFormRequest $request): RedirectResponse
@@ -24,5 +24,14 @@ class SignInController extends Controller
         $request->session()->regenerate();
 
         return redirect()->intended(route('home'));
+    }
+
+    public function logout(): RedirectResponse
+    {
+        auth()->logout();
+        request()->session()->invalidate();
+        request()->session()->regenerateToken();
+
+        return redirect()->route('home');
     }
 }
