@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Support\Testing\FakerImageProvider;
+use Support\Testing\FakerImageProvider;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
