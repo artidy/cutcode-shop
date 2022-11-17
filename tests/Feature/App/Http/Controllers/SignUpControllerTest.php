@@ -2,23 +2,47 @@
 
 namespace Tests\Feature\App\Http\Controllers;
 
-use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Requests\SignUpFormRequest;
 use App\Listeners\SendEmailNewUserListener;
-use App\Notifications\NewUserNotification;
+use App\Notifications\ResetPasswordNotification;
 use Domain\Auth\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Testing\TestResponse;
 use Tests\TestCase;
 
 class SignUpControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_it_sign_up_success(): void
+    protected array $request;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->request = SignUpFormRequest::factory()->create();
+    }
+
+    private function request(): TestResponse
+    {
+        return $this->post(
+            action([SignUpController::class, 'handle']),
+            $this->request
+        );
+    }
+
+    private function findUser(): User
+    {
+        return User::query()
+            ->where('email', $this->request['email'])
+            ->first();
+    }
+
+    public function test_it_page_success(): void
     {
         $this->get(action([SignUpController::class, 'page']))
             ->assertOk()
@@ -26,42 +50,63 @@ class SignUpControllerTest extends TestCase
             ->assertViewIs('auth.sign-up');
     }
 
-    public function test_it_register_success(): void
+    public function test_it_validation_success(): void
     {
-        Event::fake();
-        Notification::fake();
+        $this->request()
+            ->assertValid();
+    }
 
-        $request = SignUpFormRequest::factory()->create();
+    public function test_it_should_fail_validation_on_password_confirm(): void
+    {
+        $this->request['password'] = '123';
+        $this->request['password_confirmation'] = '1234';
 
+        $this->request()
+            ->assertInvalid(['password']);
+    }
+
+    public function test_it_user_created_success(): void
+    {
         $this->assertDatabaseMissing('users',
-            ['email' => $request['email']]
+            ['email' => $this->request['email']]
         );
 
-        $response = $this->post(
-            action([SignUpController::class, 'handle']),
-            $request
-        );
-
-        $response->assertValid();
+        $this->request();
 
         $this->assertDatabaseHas('users',
-            ['email' => $request['email']]
+            ['email' => $this->request['email']]
         );
+    }
+
+    public function test_it_registered_event_and_listeners_dispatched(): void
+    {
+        Event::fake();
+
+        $this->request();
 
         Event::assertDispatched(Registered::class);
         Event::assertListening(Registered::class, SendEmailNewUserListener::class);
+    }
 
-        $user = User::query()->where('email', $request['email'])->first();
+    public function test_it_notification_sent(): void
+    {
+        $this->request();
 
-        $event = new Registered($user);
+        Notification::assertSentTo(
+            $this->findUser(),
+            ResetPasswordNotification::class
+        );
+    }
 
-        $listener = new SendEmailNewUserListener();
-        $listener->handle($event);
+    public function test_it_authenticated_success(): void
+    {
+        $this->request();
 
-        Notification::assertSentTo($user, NewUserNotification::class);
+        $this->assertAuthenticatedAs($this->findUser());
+    }
 
-        $this->assertAuthenticatedAs($user);
-
-        $response->assertRedirect(route('home'));
+    public function test_it_redirected_success(): void
+    {
+        $this->request()->assertRedirect(route('home'));
     }
 }

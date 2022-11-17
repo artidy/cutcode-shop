@@ -5,7 +5,6 @@ namespace Tests\Feature\App\Http\Controllers;
 use App\Http\Controllers\Auth\SignInController;
 use App\Http\Requests\SignInFormRequest;
 use Database\Factories\UserFactory;
-use Domain\Auth\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -51,5 +50,11 @@ class SignInControllerTest extends TestCase
         $this->actingAs($user)->delete(action([SignInController::class, 'logout']));
 
         $this->assertGuest();
+    }
+
+    public function test_it_logout_guest_middleware_fail(): void
+    {
+        $this->delete(action([SignInController::class, 'logout']))
+            ->assertRedirect(route('home'));
     }
 }
