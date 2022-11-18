@@ -32,7 +32,7 @@ class SocialAuthControllerTest extends TestCase
                 ->andReturn('testing@devandy.me');
         });
 
-        Socialite::shouldRecive('driver-user')
+        Socialite::shouldReceive('driver->user')
             ->once()
             ->andReturn($user);
 

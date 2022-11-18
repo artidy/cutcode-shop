@@ -24,7 +24,9 @@ class SignUpControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->request = SignUpFormRequest::factory()->create();
+        $this->request = SignUpFormRequest::factory()->create([
+            'email' => 'testing@devandy.me'
+        ]);
     }
 
     private function request(): TestResponse
