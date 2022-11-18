@@ -9,10 +9,10 @@ use Illuminate\Support\Facades\Password;
 
 class ResetPasswordController extends Controller
 {
-    public function page(string $token)
+    public function page()
     {
         return view('auth.reset-password', [
-            'token' => $token,
+            'token' => request()->query('token'),
             'email' => request()->query('email')
         ]);
     }
