@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\Feature\App\Http\Controllers;
+namespace Tests\Feature\App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Auth\SignUpController;
 use App\Http\Requests\SignUpFormRequest;
 use App\Listeners\SendEmailNewUserListener;
-use App\Notifications\ResetPasswordNotification;
+use App\Notifications\NewUserNotification;
 use Domain\Auth\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -94,7 +94,7 @@ class SignUpControllerTest extends TestCase
 
         Notification::assertSentTo(
             $this->findUser(),
-            ResetPasswordNotification::class
+            NewUserNotification::class
         );
     }
 

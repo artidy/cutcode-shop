@@ -1,14 +1,11 @@
 <?php
 
-namespace Tests\Feature\App\Http\Controllers;
+namespace Tests\Feature\App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Auth\ResetPasswordController;
-use App\Http\Controllers\Auth\SignInController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use Database\Factories\UserFactory;
 use DomainException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Password;
 use Illuminate\Testing\TestResponse;
 use Laravel\Socialite\Contracts\User as SocialiteUser;
 use Laravel\Socialite\Facades\Socialite;
