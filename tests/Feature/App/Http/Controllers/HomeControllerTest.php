@@ -3,7 +3,6 @@
 namespace Tests\Feature\App\Http\Controllers;
 
 use App\Http\Controllers\HomeController;
-use App\Models\Product;
 use Database\Factories\BrandFactory;
 use Database\Factories\CategoryFactory;
 use Database\Factories\ProductFactory;

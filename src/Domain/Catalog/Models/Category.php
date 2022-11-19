@@ -3,12 +3,15 @@
 namespace Domain\Catalog\Models;
 
 use App\Models\Product;
-use Illuminate\Database\Eloquent\Builder;
+use Domain\Catalog\QueryBuilders\CategoryQueryBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Support\Traits\Models\HasSlug;
 
+/**
+ * @method static Category|CategoryQueryBuilder query()
+ */
 class Category extends Model
 {
     use HasFactory;
@@ -21,11 +24,9 @@ class Category extends Model
         'sorting',
     ];
 
-    public function scopeHomePage(Builder $query)
+    public function newEloquentBuilder($query): CategoryQueryBuilder
     {
-        $query->where('on_home_page', true)
-            ->orderBy('sorting')
-            ->limit(6);
+        return new CategoryQueryBuilder($query);
     }
 
     public function products(): BelongsToMany
