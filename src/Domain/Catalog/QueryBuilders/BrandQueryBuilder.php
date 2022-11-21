@@ -2,6 +2,7 @@
 
 namespace Domain\Catalog\QueryBuilders;
 
+use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Eloquent\Builder;
 
 class BrandQueryBuilder extends Builder
@@ -11,5 +12,11 @@ class BrandQueryBuilder extends Builder
         return $this->where('on_home_page', true)
             ->orderBy('sorting')
             ->limit(6);
+    }
+
+    public function catalogPage(): BrandQueryBuilder
+    {
+        return $this->select(['id', 'title'])
+            ->has('products');
     }
 }
