@@ -27,6 +27,7 @@ class Product extends Model
         'price',
         'on_home_page',
         'sorting',
+        'text',
     ];
 
     protected $casts = [
