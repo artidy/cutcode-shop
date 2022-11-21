@@ -3,8 +3,8 @@
         type="checkbox"
         value="{{ $item->id }}"
         id="filters-brands-{{ $item->id }}"
-        name="filters[brands][{{ $item->id }}]
-        @checked(request("filters.brands.$item->id"))"
+        name="filters[brands][{{ $item->id }}]"
+        @checked(request("filters.brands.$item->id"))
     >
     <label
         for="filters-brands-{{ $item->id }}"

@@ -31,7 +31,8 @@ $title = 'Каталог';
 
             <!-- Filters -->
             <aside class="basis-2/5 xl:basis-1/4">
-                <form class="overflow-auto max-h-[320px] lg:max-h-[100%] space-y-10 p-6 2xl:p-8 rounded-2xl bg-card">
+                <form action="{{ route('catalog', $category) }}"
+                    class="overflow-auto max-h-[320px] lg:max-h-[100%] space-y-10 p-6 2xl:p-8 rounded-2xl bg-card">
                     <!-- Filter item -->
                     <div>
                         <h5 class="mb-4 text-sm 2xl:text-md font-bold">Цена</h5>
@@ -103,8 +104,12 @@ $title = 'Каталог';
                         </div>
                     </div>
                     <div>
-                        <button type="reset" class="w-full !h-16 btn btn-outline">Сбросить фильтры</button>
+                        <button type="submit" class="w-full !h-16 btn btn-outline">Применить фильтры</button>
                     </div>
+
+                    @if(request('filters'))
+                        <a href="{{ route('catalog', $category) }}" class="w-full !h-16 btn btn-outline">Сбросить фильтры</a>
+                    @endif
                 </form>
             </aside>
 
