@@ -48,9 +48,6 @@ class Product extends Model
             ->send($query)
             ->through(filters())
             ->thenReturn();
-//        $query->when(request('filters.brands'), function (Builder $q) {
-//            $q->whereIn('brand_id', request('filters.brands'));
-//        });
     }
 
     public function scopeSorted(Builder $query)

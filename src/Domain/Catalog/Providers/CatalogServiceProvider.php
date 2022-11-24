@@ -2,6 +2,7 @@
 
 namespace Domain\Catalog\Providers;
 
+use App\Filters\BrandFilter;
 use App\Filters\PriceFilter;
 use Domain\Catalog\Filters\FilterManager;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -19,7 +20,8 @@ class CatalogServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         app(FilterManager::class)->registerFilters([
-            new PriceFilter()
+            new PriceFilter(),
+            new BrandFilter()
         ]);
     }
 }
