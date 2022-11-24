@@ -2,7 +2,6 @@
 
 namespace Domain\Catalog\QueryBuilders;
 
-use Domain\Catalog\Models\Brand;
 use Illuminate\Database\Eloquent\Builder;
 
 class BrandQueryBuilder extends Builder

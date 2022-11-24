@@ -13,8 +13,7 @@ class FakerImageProvider extends Base
     {
         $storagePath = self::IMAGE_DIRECTORY . '/' . $storageDir;
 
-        if (!Storage::exists($storagePath))
-        {
+        if (!Storage::exists($storagePath)) {
             Storage::makeDirectory($storagePath);
         }
 

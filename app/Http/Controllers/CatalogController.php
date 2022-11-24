@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
+use Domain\Catalog\ViewModels\BrandViewModel;
 use Domain\Catalog\ViewModels\CategoryViewModel;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -12,9 +12,7 @@ class CatalogController extends Controller
 {
     public function __invoke(?Category $category)
     {
-        $brands = Brand::query()
-            ->catalogPage()
-            ->get();
+        $brands = BrandViewModel::make()->catalogPage();
 
         $categories = CategoryViewModel::make()->catalogPage();
 
