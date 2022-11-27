@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Jobs\ProductJsonProperties;
 use Domain\Catalog\Facades\Sorter;
 use Domain\Catalog\Models\Brand;
 use Domain\Catalog\Models\Category;
@@ -30,11 +31,25 @@ class Product extends Model
         'on_home_page',
         'sorting',
         'text',
+        'json_properties'
     ];
 
     protected $casts = [
-        'price' => PriceCast::class
+        'price' => PriceCast::class,
+        'json_properties' => 'array'
     ];
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        self::created(function (Product $product) {
+            // необходимо включить очереди в асинхронное выполнение комманда: php artisan queue:table;
+            // после создания товара создает очередь, которую необходимо выполнить запустив команду: php artisan queue:work
+            ProductJsonProperties::dispatch($product)
+                ->delay(now()->addSeconds(10));
+        });
+    }
 
     public function scopeHomePage(Builder $query)
     {

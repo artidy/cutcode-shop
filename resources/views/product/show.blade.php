@@ -61,7 +61,9 @@
                             <div class="text-body text-md md:text-lg font-bold line-through">{{ $product->price }}</div>
                         </div>
                         <ul class="sm:max-w-[360px] space-y-2 mt-8">
-                            @each('product.shared.property', $product->properties, 'item')
+                            @foreach($product->json_properties as $property => $value)
+                                <li class="flex justify-between text-body"><strong>{{ $property }}:</strong> {{ $value }}</li>
+                            @endforeach
                         </ul>
 
                         <!-- Add to cart -->
