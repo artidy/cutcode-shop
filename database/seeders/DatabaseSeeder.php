@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\Option;
 use App\Models\OptionValue;
 use App\Models\Product;
 use App\Models\Property;
@@ -29,10 +28,10 @@ class DatabaseSeeder extends Seeder
 
         CategoryFactory::new()->count(20)
             ->has(Product::factory(rand(5, 20))
-                ->hasAttached(OptionValue::all()->random(rand(1, 10)))
-                ->hasAttached(Property::all()->random(rand(1, 10)), function () {
-                return ['value' => ucfirst(fake()->word())];
-            }))
+                ->hasAttached(OptionValue::all()->random(10))
+                ->hasAttached(Property::all()->random(10), function () {
+                    return ['value' => ucfirst(fake()->word())];
+                }))
             ->create();
     }
 }
