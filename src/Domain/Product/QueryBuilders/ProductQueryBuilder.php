@@ -32,13 +32,23 @@ class ProductQueryBuilder extends Builder
     public function catalogPage(Category $category): ProductQueryBuilder
     {
         return $this->select(['id', 'title', 'slug', 'price', 'thumbnail', 'json_properties'])
-            ->when(request('s'), function (Builder $query) {
-                $query->whereFullText(['title', 'text'], request('s'));
-            })
-            ->when($category->exists, function (Builder $query) use($category) {
-                $query->whereRelation('categories', 'categories.id', '=', $category->id);
-            })
+            ->search()
+            ->withCategory($category)
             ->filtered()
             ->sorted();
+    }
+
+    public function search(): ProductQueryBuilder
+    {
+        return $this->when(request('s'), function (Builder $query) {
+            $query->whereFullText(['title', 'text'], request('s'));
+        });
+    }
+
+    public function withCategory(Category $category): ProductQueryBuilder
+    {
+        return $this->when($category->exists, function (Builder $query) use($category) {
+            $query->whereRelation('categories', 'categories.id', '=', $category->id);
+        });
     }
 }
