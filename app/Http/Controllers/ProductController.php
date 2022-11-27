@@ -10,6 +10,18 @@ class ProductController extends Controller
     {
         $product->load(['optionValues.option']);
 
+        $sessionAlso = session('also');
+        $also = [];
+
+        if ($sessionAlso) {
+            $also = Product::query()
+                ->where(function ($query) use ($product, $sessionAlso) {
+                    $query->whereIn('id', $sessionAlso)
+                        ->where('id', '!=', $product->id);
+                })
+                ->get();
+        }
+
         $options = $product->optionValues->mapToGroups(function ($item) {
             return [$item->option->title => $item];
         });
@@ -19,6 +31,7 @@ class ProductController extends Controller
         return view('product.show', [
             'product' => $product,
             'options' => $options,
+            'also' => $also,
         ]);
     }
 }

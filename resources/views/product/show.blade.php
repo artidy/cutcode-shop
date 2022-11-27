@@ -1,6 +1,6 @@
-@extends('layouts.app');
+@extends('layouts.app')
 
-@section('title', $product->title);
+@section('title', $product->title)
 
 @section('content')
     <main class="py-16 lg:py-20">
@@ -119,13 +119,15 @@
             </section>
 
             <!-- Watched products  -->
-            <section class="mt-16 xl:mt-24">
-                <h2 class="mb-12 text-lg lg:text-[42px] font-black">Просмотренные товары</h2>
-                <!-- Products list -->
-                <div class="products grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-8 gap-y-8 lg:gap-y-10 2xl:gap-y-12">
-
-                </div>
-            </section>
+            @if(count($also) > 0)
+                <section class="mt-16 xl:mt-24">
+                    <h2 class="mb-12 text-lg lg:text-[42px] font-black">Просмотренные товары</h2>
+                    <!-- Products list -->
+                    <div class="products grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-x-8 gap-y-8 lg:gap-y-10 2xl:gap-y-12">
+                        @each('catalog.shared.product', $also, 'item')
+                    </div>
+                </section>
+            @endif
 
         </div>
     </main>
