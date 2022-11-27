@@ -30,8 +30,7 @@ class ProductJsonProperties implements ShouldQueue, ShouldBeUnique
      */
     public function handle()
     {
-        $properties = $this->product->properties->mapWithKeys(fn($property) =>
-        [$property->title => $property->pivot->value]);
+        $properties = $this->product->properties->keyValues();
 
         $this->product->updateQuietly(['json_properties' => $properties]);
     }
