@@ -31,7 +31,7 @@ class CartManager
         Cache::forget($this->cacheKey());
     }
 
-    private function storageData(string $storage_id)
+    private function storageData(string $storage_id): array
     {
         $data = [
             'storage_id' => $storage_id
@@ -135,5 +135,12 @@ class CartManager
     public function amount(): Price
     {
         return Price::make($this->cartItems()->sum(fn ($item) => $item->amount->raw()));
+    }
+
+    public function updateStorageKey(string $previousKey, string $currentKey): void
+    {
+        Cart::query()
+            ->where(['storage_id' => $previousKey])
+            ->update($this->storageData($currentKey));
     }
 }
