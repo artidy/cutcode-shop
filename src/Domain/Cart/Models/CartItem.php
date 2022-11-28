@@ -2,9 +2,9 @@
 
 namespace Domain\Cart\Models;
 
-use Attribute;
 use Domain\Product\Models\OptionValue;
 use Domain\Product\Models\Product;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -26,6 +26,12 @@ class CartItem extends Model
 
     protected $casts = [
         'price' => PriceCast::class
+    ];
+
+    protected $with = [
+        'cart',
+        'product',
+        'optionValues'
     ];
 
     public function amount(): Attribute

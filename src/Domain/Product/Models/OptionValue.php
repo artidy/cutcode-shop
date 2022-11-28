@@ -16,6 +16,10 @@ class OptionValue extends Model
         'option_id'
     ];
 
+    protected $with = [
+        'option'
+    ];
+
     public function option(): BelongsTo
     {
         return $this->belongsTo(Option::class);

@@ -9,6 +9,7 @@ use Domain\Product\Models\Product;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Support\ValueObjects\Price;
 
@@ -17,6 +18,18 @@ class CartManager
     public function __construct(
         protected CartIdentityStorageContract $identityStorage
     ) {}
+
+    private function cacheKey(): string
+    {
+        return str('cart_' . $this->identityStorage->get())
+            ->slug('_')
+            ->value();
+    }
+
+    private function resetCache(): void
+    {
+        Cache::forget($this->cacheKey());
+    }
 
     private function storageData(string $storage_id)
     {
@@ -40,24 +53,27 @@ class CartManager
 
     public function add(Product $product, int $quantity = 1, array $optionValues = []): Model|Builder
     {
-        $storage_id = $this->identityStorage->get();
-        $product_key = $product->getKey();
-        $string_option_values = $this->formatOptionValues($optionValues);
+        $storageId = $this->identityStorage->get();
+        $productKey = $product->getKey();
+        $stringOptionValues = $this->formatOptionValues($optionValues);
 
         $cart = Cart::query()->updateOrCreate([
-                'storage_id' => $storage_id
-            ], $this->storageData($storage_id));
+                'storage_id' => $storageId
+            ], $this->storageData($storageId));
 
-        $cartItem = $cart->updateOrCreate([
-            'product_id' => $product_key,
-            'string_option_values' => $string_option_values
+        $cartItem = $cart->cartItems()->updateOrCreate([
+            'product_id' => $productKey,
+            'string_option_values' => $stringOptionValues
         ], [
-            'product_id' => $product_key,
+            'product_id' => $productKey,
             'quantity' => DB::raw("quantity + $quantity"),
-            'string_option_values' => $string_option_values
+            'price' => $product->price->raw(),
+            'string_option_values' => $stringOptionValues
         ]);
 
         $cartItem->optionValues()->sync($optionValues);
+
+        $this->resetCache();
 
         return $cart;
     }
@@ -65,25 +81,45 @@ class CartManager
     public function quantity(CartItem $cartItem, int $quantity): void
     {
         $cartItem->update(['quantity' => $quantity]);
+
+        $this->resetCache();
     }
 
     public function delete(CartItem $cartItem): void
     {
         $cartItem->delete();
+
+        $this->resetCache();
     }
 
     public function truncate(): void
     {
         $this->get()?->delete();
+
+        $this->resetCache();
     }
 
-    public function get(): Cart
+    public function get(): Cart|false
     {
-        return Cart::query()
-            ->with('cartItems')
-            ->where('storage_id', $this->identityStorage->get())
-            ->when(auth()->check(), fn(Builder $query) => $query->orWhere(['user_id' => auth()->id()]))
-            ->first();
+        return Cache::remember($this->cacheKey(), now()->addHour(), function () {
+            return Cart::query()
+                ->with('cartItems')
+                ->where('storage_id', $this->identityStorage->get())
+                ->when(auth()->check(), fn(Builder $query) => $query->orWhere(['user_id' => auth()->id()]))
+                ->first() ?? false;
+        });
+    }
+
+    public function items(): Collection
+    {
+        if (!$this->get()) {
+            return collect([]);
+        }
+
+        return CartItem::query()
+            ->with(['product', 'optionValues.option'])
+            ->whereBelongsTo($this->get())
+            ->get();
     }
 
     public function cartItems(): Collection

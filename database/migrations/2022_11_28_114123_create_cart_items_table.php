@@ -25,7 +25,7 @@ return new class extends Migration
                 ->cascadeOnDelete()
                 ->cascadeOnUpdate();
 
-            $table->integer('price');
+            $table->unsignedBigInteger('price');
             $table->integer('quantity');
 
             $table->string('string_option_values');
@@ -53,7 +53,7 @@ return new class extends Migration
     public function down(): void
     {
         if (!app()->isProduction()) {
-            Schema::drop('cart_item_option_value');
+            Schema::dropIfExists('cart_item_option_value');
             Schema::dropIfExists('cart_items');
         }
     }
