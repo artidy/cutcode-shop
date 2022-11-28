@@ -22,8 +22,8 @@ class CartController extends Controller
     {
         cart()->add(
             $product,
-            request('quantity'),
-            request('options')
+            request('quantity', 1),
+            request('options', [])
         );
 
         flash()->info('Товар добавлен в корзину');
@@ -33,7 +33,7 @@ class CartController extends Controller
 
     public function quantity(CartItem $cartItem): RedirectResponse
     {
-        cart()->quantity($cartItem, request('quantity'));
+        cart()->quantity($cartItem, request('quantity', 1));
 
         flash()->info('Количество товаров изменено');
 
