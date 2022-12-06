@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Contracts\RouteRegistrar;
 use App\Routing\AppRegistrar;
 use App\Routing\AuthRegistrar;
+use App\Routing\CartRegistrar;
 use App\Routing\CatalogRegistrar;
+use App\Routing\OrderRegistrar;
 use App\Routing\ProductRegistrar;
 use Illuminate\Cache\RateLimiting\Limit;
 use Illuminate\Contracts\Routing\Registrar;
@@ -27,8 +29,8 @@ class RouteServiceProvider extends ServiceProvider
     public const HOME = '/';
 
     protected array $registrars = [
-        \App\Routing\OrderRegistrar::class,
-        \App\Routing\CartRegistrar::class,
+        OrderRegistrar::class,
+        CartRegistrar::class,
         AppRegistrar::class,
         AuthRegistrar::class,
         CatalogRegistrar::class,

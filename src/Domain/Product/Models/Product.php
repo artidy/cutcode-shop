@@ -28,6 +28,7 @@ class Product extends Model
         'slug',
         'brand_id',
         'thumbnail',
+        'quantity',
         'price',
         'on_home_page',
         'sorting',

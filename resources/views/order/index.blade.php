@@ -21,7 +21,9 @@ $title = 'Оформление заказов';
                 <!-- Section heading -->
                 <h1 class="mb-8 text-lg lg:text-[42px] font-black">{{ $title }}</h1>
 
-                <form action="{{ route('order.handle') }}" method="POST" class="grid xl:grid-cols-3 items-start gap-6 2xl:gap-8 mt-12">
+                <form class="grid xl:grid-cols-3 items-start gap-6 2xl:gap-8 mt-12"
+                      action="{{ route('order.handle') }}"
+                      method="POST">
                     @csrf
 
                     <!-- Contact information -->
@@ -32,11 +34,9 @@ $title = 'Оформление заказов';
                                 name="customer[first_name]"
                                 type="text"
                                 value="{{ old('customer.first_name') }}"
-                                class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                 placeholder="Имя"
                                 :isError="$errors->has('customer.first_name')"
-                            >
-                            </x-forms.text-input>
+                            />
 
                             @error('customer.first_name')
                             <x-forms.error>
@@ -48,11 +48,9 @@ $title = 'Оформление заказов';
                                     name="customer[last_name]"
                                     type="text"
                                     value="{{ old('customer.last_name') }}"
-                                    class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                     placeholder="Фамилия"
                                     :isError="$errors->has('customer.last_name')"
-                            >
-                            </x-forms.text-input>
+                            />
 
                             @error('customer.last_name')
                             <x-forms.error>
@@ -64,11 +62,9 @@ $title = 'Оформление заказов';
                                     name="customer[phone]"
                                     type="text"
                                     value="{{ old('customer.phone') }}"
-                                    class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                     placeholder="Номер телефона"
                                     :isError="$errors->has('customer.phone')"
-                            >
-                            </x-forms.text-input>
+                            />
 
                             @error('customer.phone')
                             <x-forms.error>
@@ -83,8 +79,7 @@ $title = 'Оформление заказов';
                                     class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                     placeholder="E-mail"
                                     :isError="$errors->has('customer.email')"
-                            >
-                            </x-forms.text-input>
+                            />
 
                             @error('customer.email')
                             <x-forms.error>
@@ -93,7 +88,7 @@ $title = 'Оформление заказов';
                             @enderror
 
                             @guest
-                                <div x-data="{ createAccount: false }">
+                                <div x-data="{ createAccount: {!! old('create_account') ? 'true' : 'false' !!} }">
                                     <div class="py-3 text-body">Вы можете создать аккаунт после оформления заказа</div>
                                     <div class="form-checkbox">
                                         <input name="create_account"
@@ -117,10 +112,9 @@ $title = 'Оформление заказов';
                                         <x-forms.text-input
                                             name="password"
                                             type="password"
-                                            class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                             placeholder="Придумайте пароль"
                                             :isError="$errors->has('password')"
-                                        ></x-forms.text-input>
+                                        />
 
                                         @error('password')
                                         <x-forms.error>
@@ -131,10 +125,9 @@ $title = 'Оформление заказов';
                                         <x-forms.text-input
                                                 name="password_confirmation"
                                                 type="password"
-                                                class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                                 placeholder="Повторите пароль"
                                                 :isError="$errors->has('password_confirmation')"
-                                        ></x-forms.text-input>
+                                        />
 
                                         @error('password_confirmation')
                                         <x-forms.error>
@@ -164,10 +157,9 @@ $title = 'Оформление заказов';
                                                     name="customer[city]"
                                                     type="text"
                                                     value="{{ old('customer.city') }}"
-                                                    class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                                     placeholder="Город"
                                                     :isError="$errors->has('customer.city')"
-                                            ></x-forms.text-input>
+                                            />
 
                                             @error('customer.city')
                                             <x-forms.error>
@@ -179,10 +171,9 @@ $title = 'Оформление заказов';
                                                     name="customer[address]"
                                                     type="text"
                                                     value="{{ old('customer.address') }}"
-                                                    class="w-full h-16 px-4 rounded-lg border border-body/10 focus:border-pink focus:shadow-[0_0_0_3px_#EC4176] bg-white/5 text-white text-xs shadow-transparent outline-0 transition"
                                                     placeholder="Адрес"
                                                     :isError="$errors->has('customer.address')"
-                                            ></x-forms.text-input>
+                                            />
 
                                             @error('customer.address')
                                             <x-forms.error>
@@ -206,8 +197,8 @@ $title = 'Оформление заказов';
                                         <input type="radio"
                                                name="payment_method_id"
                                                id="payment-method-{{ $payment->id }}"
-                                               value="{{ old('payment_method_id') }}"
-                                               @checked($loop->first || old('payment_method_id') === $payment->id)
+                                               value="{{ $payment->id }}"
+                                               @checked($loop->first || old('payment_method_id') == $payment->id)
                                         >
                                         <label for="payment-method-{{ $payment->id }}" class="form-radio-label">{{ $payment->title }}</label>
                                     </div>
@@ -267,11 +258,9 @@ $title = 'Оформление заказов';
                                 </tbody>
                             </table>
 
-                            <!-- Process to checkout -->
                             <button type="submit" class="w-full btn btn-pink">Оформить заказ</button>
                         </div>
                     </div>
-
                 </form>
             </section>
 
